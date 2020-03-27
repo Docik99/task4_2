@@ -34,28 +34,34 @@ TEST_CASE("Sort")
 
 }
 
-/*TEST_CASE("Extract")
+TEST_CASE("Extract")
 {
     Heap heap;
 
-    for (int i = 1; i < 1000; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        heap.add(i, 1000 - i);
+        heap.add(i, 10);
     }
 
-    for (int i = 998; i > 0; i--)
+    for (int i = 999; i >= 0 ; i--)
     {
         heap.sort();
-        auto iter_e = heap.heaplist.end();
-        //iter_e--;
-        heap.extract_max();
-        auto iter_b = heap.heaplist.begin();
+        int key_b = heap.heaplist.back().key;
+
+        int max = heap.extract_max();
+        int key_f = heap.heaplist.front().key;
+
         REQUIRE(heap.getsize() == i);
-        REQUIRE(iter_b->key == iter_e->key);
-        REQUIRE(iter_b->value == iter_e->value);
+        REQUIRE(key_f == key_b);
+
+        for (auto it = heap.heaplist.begin(); it != heap.heaplist.end(); it++)
+        {
+            REQUIRE(it->key != max);
+        }
     }
+
     for (int i = 0; i < 100; i++) REQUIRE_THROWS_AS( heap.extract_max() , std::out_of_range);
-}*/
+}
 
 TEST_CASE("Size")
 {

@@ -20,7 +20,7 @@ public:
     Heap();
     void add(int key, int value);
     void sort();
-    void extract_max();
+    int extract_max();
     int getsize();
     int height();
 };

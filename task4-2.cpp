@@ -31,34 +31,52 @@ void Heap::sort() {
                 auto iter_dubl = iter_osn;
                 int left_C = 2 * i + 1;
                 int right_C = 2 * i + 2;
-                while((left_C <= heaplist.size() - 1) || (right_C <= heaplist.size() - 1))
+                //while((left_C <= heaplist.size() - 1) || (right_C <= heaplist.size() - 1))
+                for (;;)
                 {
                     auto iter1= heaplist.begin();
                     auto iter2 = heaplist.begin();
                     for (int j = 0; j < left_C; j++) iter1++;
                     for (int j = 0; j < right_C; j++) iter2++;
 
-                    if ((iter->key < iter1->key) || (iter->key < iter2->key))
+                    if (left_C <= heaplist.size() - 1)
                     {
-                        if ((iter1->key - iter2->key) > 0)
+                        if (right_C <= heaplist.size() - 1)
                         {
-                            iter_dubl = iter1;
-                            swap(*iter,*iter1);
-                            right_C = 2 * left_C + 2;
-                            left_C = 2 * left_C + 1;
-                            iter = iter_dubl;
-                            col_swap++;
-                            global_col_swap++;
+                            if ((iter->key < iter1->key) || (iter->key < iter2->key))
+                            {
+                                if ((iter1->key - iter2->key) > 0)
+                                {
+                                    iter_dubl = iter1;
+                                    swap(*iter,*iter1);
+                                    right_C = 2 * left_C + 2;
+                                    left_C = 2 * left_C + 1;
+                                    iter = iter_dubl;
+                                    col_swap++;
+                                    global_col_swap++;
+                                }
+                                else
+                                {
+                                    iter_dubl = iter2;
+                                    swap(*iter, *iter2);
+                                    left_C = 2 * right_C + 1;
+                                    right_C = 2 * right_C + 2;
+                                    iter = iter_dubl;
+                                    col_swap++;
+                                    global_col_swap++;
+                                }
+                            }
+                            else break;
                         }
-                        else
+                        else if (right_C > heaplist.size() - 1)
                         {
-                            iter_dubl = iter2;
-                            swap(*iter, *iter2);
-                            left_C = 2 * right_C + 1;
-                            right_C = 2 * right_C + 2;
-                            iter = iter_dubl;
-                            col_swap++;
-                            global_col_swap++;
+                            if (iter->key < iter1->key)
+                            {
+                                swap(*iter,*iter1);
+                                col_swap++;
+                                global_col_swap++;
+                            }
+                            else break;
                         }
                     }
                     else break;
@@ -70,15 +88,18 @@ void Heap::sort() {
     }
 }
 
-void Heap::extract_max()
+int Heap::extract_max()
 {
+    //sort();
     if (!heaplist.empty())
     {
         auto iter_b = heaplist.begin();
+        int max = iter_b->key;
         auto iter_e = heaplist.end();
         iter_e--;
         swap(*iter_b, *iter_e);
         heaplist.pop_back();
+        return max;
     }
     else throw std::out_of_range("Empty");
 }
