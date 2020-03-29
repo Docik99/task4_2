@@ -23,4 +23,5 @@ public:
     int extract_max();
     int getsize();
     int height();
+    bool check();
 };

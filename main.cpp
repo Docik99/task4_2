@@ -8,7 +8,7 @@ int main() {
 
 
 
-for (int i = 0; i < 10; i++)    heap.add(i,10 - i);
+for (int i = 10; i > 0; i--)    heap.add(i,10 - i);
 
 
 
@@ -26,7 +26,7 @@ for (int i = 0; i < 10; i++)    heap.add(i,10 - i);
       {
           cout << it->key << " ";
       }
-      cout << endl << heap.heaplist.begin()->value << endl;
+      cout << endl;
   }
 
 

@@ -43,9 +43,9 @@ void Heap::sort() {
                     {
                         if (right_C <= heaplist.size() - 1)
                         {
-                            if ((iter->key < iter1->key) || (iter->key < iter2->key))
+                            if ((iter->key > iter1->key) || (iter->key > iter2->key))
                             {
-                                if ((iter1->key - iter2->key) > 0)
+                                if ((iter1->key - iter2->key) < 0)
                                 {
                                     iter_dubl = iter1;
                                     swap(*iter,*iter1);
@@ -70,7 +70,7 @@ void Heap::sort() {
                         }
                         else if (right_C > heaplist.size() - 1)
                         {
-                            if (iter->key < iter1->key)
+                            if (iter->key > iter1->key)
                             {
                                 swap(*iter,*iter1);
                                 col_swap++;
@@ -90,15 +90,20 @@ void Heap::sort() {
 
 int Heap::extract_max()
 {
-    //sort();
+    sort();
     if (!heaplist.empty())
     {
-        auto iter_b = heaplist.begin();
-        int max = iter_b->key;
-        auto iter_e = heaplist.end();
-        iter_e--;
-        swap(*iter_b, *iter_e);
-        heaplist.pop_back();
+        int max = heaplist.front().key;
+        auto iter_m = heaplist.begin();
+        for (auto iter = heaplist.begin(); iter != heaplist.end(); iter++)
+        {
+            if (iter->key > max)
+            {
+                max = iter->key;
+                iter_m = iter;
+            }
+        }
+        heaplist.erase(iter_m);
         return max;
     }
     else throw std::out_of_range("Empty");
@@ -112,4 +117,32 @@ int Heap::getsize()
 int Heap::height()
 {
     return int(log2(heaplist.size()) + 1);
+}
+
+bool Heap::check()
+{
+    for (int i = 0; i < heaplist.size(); i++) //проверка того что каждый потомок больше родителя
+    {
+        auto iter = heaplist.begin();
+        for (int j = 0; j < i; j++) iter++;
+
+        int left_C = 2 * i + 1;
+        int right_C = 2 * i + 2;
+
+        auto iterL= heaplist.begin();
+        auto iterR = heaplist.begin();
+        for (int j = 0; j < left_C; j++) iterL++;
+        for (int j = 0; j < right_C; j++) iterR++;
+
+        if (left_C <= heaplist.size() - 1)
+        {
+            if (iterL->key < iter->key) return false;
+        }
+
+        if (right_C <= heaplist.size() - 1)
+        {
+            if (iterR->key < iter->key) return false;
+        }
+    }
+    return true;
 }

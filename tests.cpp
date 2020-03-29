@@ -31,10 +31,19 @@ TEST_CASE("Add")
 
 TEST_CASE("Sort")
 {
+    Heap heap;
+
+    for (int i = 0; i < 1000; i++)
+    {
+        heap.add(i, 10);
+        heap.sort();
+        REQUIRE(heap.check());
+    }
+
 
 }
 
-TEST_CASE("Extract")
+/*TEST_CASE("Extract")//max для невозрастающей
 {
     Heap heap;
 
@@ -53,6 +62,31 @@ TEST_CASE("Extract")
 
         REQUIRE(heap.getsize() == i);
         REQUIRE(key_f == key_b);
+
+        for (auto it = heap.heaplist.begin(); it != heap.heaplist.end(); it++)
+        {
+            REQUIRE(it->key != max);
+        }
+    }
+
+    for (int i = 0; i < 100; i++) REQUIRE_THROWS_AS( heap.extract_max() , std::out_of_range);
+}*/
+
+TEST_CASE("Extract")//max для невозрастающей
+{
+    Heap heap;
+
+    for (int i = 0; i < 1000; i++)
+    {
+        heap.add(i, 10);
+    }
+
+    for (int i = 999; i >= 0 ; i--)
+    {
+        int max = heap.extract_max();
+
+        REQUIRE(heap.getsize() == i);
+        REQUIRE(heap.height() == int(log2(i) + 1));
 
         for (auto it = heap.heaplist.begin(); it != heap.heaplist.end(); it++)
         {
