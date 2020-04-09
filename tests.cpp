@@ -72,7 +72,7 @@ TEST_CASE("Sort")
     for (int i = 0; i < 100; i++) REQUIRE_THROWS_AS( heap.extract_max() , std::out_of_range);
 }*/
 
-TEST_CASE("Extract")//max для невозрастающей
+TEST_CASE("Extract")//max для неубывающей
 {
     Heap heap;
 

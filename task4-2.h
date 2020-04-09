@@ -8,12 +8,14 @@ using namespace std;
 
 class Heap
 {
-public:
     struct Pair
     {
         int key;
         int value;
     };
+
+public:
+
     Pair para;
     list <struct Pair> heaplist;
 
